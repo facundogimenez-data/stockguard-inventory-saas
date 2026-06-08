@@ -26,17 +26,15 @@ ALERTS_JSON = Path(__file__).parent / 'outputs' / 'alerts.json'
 
 st.markdown("""
 <style>
-  .kpi-card { background:#1e293b; border-radius:10px; padding:16px 20px; border-left:4px solid #3b82f6; }
-  .kpi-card.critical { border-left-color:#ef4444; }
-  .kpi-card.high     { border-left-color:#f59e0b; }
-  .kpi-card.medium   { border-left-color:#3b82f6; }
-  .kpi-card.money    { border-left-color:#10b981; }
-  .kpi-label { font-size:.78rem; color:#94a3b8; text-transform:uppercase; letter-spacing:.05em; }
-  .kpi-value { font-size:1.8rem; font-weight:700; color:#f1f5f9; margin:4px 0; }
-  .kpi-sub   { font-size:.75rem; color:#64748b; }
-  .badge-critical { background:#fef2f2; color:#b91c1c; padding:2px 10px; border-radius:20px; font-size:.78rem; font-weight:600; }
-  .badge-high     { background:#fffbeb; color:#92400e; padding:2px 10px; border-radius:20px; font-size:.78rem; font-weight:600; }
-  .badge-medium   { background:#eff6ff; color:#1d4ed8; padding:2px 10px; border-radius:20px; font-size:.78rem; font-weight:600; }
+  .kpi-card { background:#FFFFFF; border-radius:10px; padding:16px 20px; border-left:4px solid #727D71;
+              box-shadow:0 1px 3px rgba(109,76,61,.12); }
+  .kpi-card.critical { border-left-color:#6D4C3D; }
+  .kpi-card.high     { border-left-color:#A39171; }
+  .kpi-card.medium   { border-left-color:#727D71; }
+  .kpi-card.money    { border-left-color:#ABC4AB; }
+  .kpi-label { font-size:.78rem; color:#727D71; text-transform:uppercase; letter-spacing:.05em; }
+  .kpi-value { font-size:1.8rem; font-weight:700; color:#3D2B22; margin:4px 0; }
+  .kpi-sub   { font-size:.75rem; color:#8A7B6C; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -104,9 +102,9 @@ def fmt_days(v):
 
 
 SEVERITY_BADGE = {
-    'critical': '<span class="badge-critical">🔴 Critical</span>',
-    'high':     '<span class="badge-high">🟡 High</span>',
-    'medium':   '<span class="badge-medium">🔵 Medium</span>',
+    'critical': '🔴 Critical',
+    'high':     '🟡 High',
+    'medium':   '🔵 Medium',
 }
 
 with st.sidebar:
@@ -167,9 +165,9 @@ if page == "📊 Overview":
         total = n_critical + n_high + n_medium
         if total:
             fig = go.Figure(data=[go.Pie(labels=['Critical', 'High', 'Medium'], values=[n_critical, n_high, n_medium],
-                                          hole=.55, marker_colors=['#ef4444', '#f59e0b', '#3b82f6'])])
+                                          hole=.55, marker_colors=['#6D4C3D', '#A39171', '#727D71'])])
             fig.update_layout(showlegend=False, height=280, margin=dict(t=20, b=20, l=20, r=20),
-                              paper_bgcolor='rgba(0,0,0,0)', font_color='#e2e8f0')
+                              paper_bgcolor='rgba(0,0,0,0)', font_color='#3D2B22')
             st.plotly_chart(fig, use_container_width=True)
         else:
             st.info("No alerts yet — click 'Run analysis' in the sidebar.")
@@ -182,9 +180,9 @@ if page == "📊 Overview":
                 cat = a['product']['category']
                 cats[cat] = cats.get(cat, 0) + 1
             df_cat = pd.DataFrame(cats.items(), columns=['Category', 'Alerts']).sort_values('Alerts')
-            fig2 = px.bar(df_cat, x='Alerts', y='Category', orientation='h', color_discrete_sequence=['#ef4444'])
+            fig2 = px.bar(df_cat, x='Alerts', y='Category', orientation='h', color_discrete_sequence=['#6D4C3D'])
             fig2.update_layout(height=280, margin=dict(t=20, b=20, l=10, r=20),
-                               paper_bgcolor='rgba(0,0,0,0)', font_color='#e2e8f0')
+                               paper_bgcolor='rgba(0,0,0,0)', font_color='#3D2B22')
             st.plotly_chart(fig2, use_container_width=True)
         else:
             st.success("No active critical alerts.")
