@@ -56,12 +56,13 @@ class StockGuardForecast:
     def fetch_inventory_metrics(self) -> List[Dict]:
         query = """
             SELECT
-                product_id, name, sku, category, unit_cost AS unit_price,
-                lead_time_days, current_stock, sales_last_30d AS sales_last_30_days,
-                days_of_inventory,
-                ROUND(sales_last_30d / 30.0, 2) AS daily_avg_sales
-            FROM v_inventory_metrics
-            ORDER BY days_of_inventory ASC, current_stock DESC;
+                m.product_id, m.name, m.sku, m.category, p.unit_cost AS unit_price,
+                m.lead_time_days, m.current_stock, m.sales_last_30d AS sales_last_30_days,
+                m.days_of_inventory,
+                ROUND(m.sales_last_30d / 30.0, 2) AS daily_avg_sales
+            FROM v_inventory_metrics m
+            JOIN products p ON p.product_id = m.product_id
+            ORDER BY m.days_of_inventory ASC, m.current_stock DESC;
         """
         cursor = self.conn.cursor(dictionary=True)
         cursor.execute(query)
