@@ -79,7 +79,6 @@ def run_engine() -> tuple[bool, str]:
     try:
         result = subprocess.run([sys.executable, str(engine_path)], capture_output=True, text=True, timeout=120)
         if result.returncode == 0:
-            load_alerts.clear()
             load_inventory.clear()
             return True, result.stdout
         return False, result.stderr or result.stdout
